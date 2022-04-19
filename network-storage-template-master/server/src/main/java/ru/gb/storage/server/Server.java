@@ -59,5 +59,6 @@ public class Server {
         System.out.println(message);
         client.write(byteBuffer.flip());
         client.write(ByteBuffer.wrap(String.format(message).getBytes()));
+        byteBuffer.clear();
     }
 }

@@ -33,14 +33,15 @@ public class Client{
                 try {
                     SocketChannel channel = SocketChannel.open(new InetSocketAddress("localhost", 9000));
                     while (true) {
-                        String messageOut=scanner.next();
+                        String messageOut=scanner.nextLine();
                         channel.write(ByteBuffer.wrap(String.format(
                                 messageOut
                         ).getBytes()));
-                        ByteBuffer byteBuffer = ByteBuffer.allocate(256);
-                        channel.read(byteBuffer);
-                        String messageIn = new String(byteBuffer.array());
+                        ByteBuffer byteBuffer2 = ByteBuffer.allocate(256);
+                        channel.read(byteBuffer2);
+                        String messageIn = new String(byteBuffer2.array());
                         System.out.println(messageIn);
+                        byteBuffer2.clear();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
