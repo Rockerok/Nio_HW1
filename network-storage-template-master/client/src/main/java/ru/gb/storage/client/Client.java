@@ -6,8 +6,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.time.LocalDateTime;
+import java.util.Iterator;
+import java.util.Scanner;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,23 +27,26 @@ public class Client{
     }
 
     public void start() {
-        for (int i = 0; i < 5; i++) {
-            THREAD_POOL.execute(() -> {
-                System.out.println("New client started on thread " + Thread.currentThread().getName());
+         THREAD_POOL.execute(() -> {
+                System.out.println("New client started ");
+                Scanner scanner = new Scanner(System.in);
                 try {
                     SocketChannel channel = SocketChannel.open(new InetSocketAddress("localhost", 9000));
                     while (true) {
+                        String messageOut=scanner.next();
                         channel.write(ByteBuffer.wrap(String.format(
-                                "[%s] Message from thread %s",
-                                LocalDateTime.now(),
-                                Thread.currentThread().getName()
+                                messageOut
                         ).getBytes()));
-                        Thread.sleep(3000);
+                        ByteBuffer byteBuffer = ByteBuffer.allocate(256);
+                        channel.read(byteBuffer);
+                        String messageIn = new String(byteBuffer.array());
+                        System.out.println(messageIn);
                     }
-                } catch (IOException | InterruptedException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
+                scanner.close();
             });
-        }
     }
+
 }
