@@ -42,6 +42,7 @@ public class Client{
                         String messageIn = new String(byteBuffer2.array());
                         System.out.println(messageIn);
                         byteBuffer2.clear();
+                        byteBuffer2.flip();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

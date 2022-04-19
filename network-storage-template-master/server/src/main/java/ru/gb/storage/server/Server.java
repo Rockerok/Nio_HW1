@@ -57,8 +57,9 @@ public class Server {
         client.read(byteBuffer);
         String message = new String(byteBuffer.array());
         System.out.println(message);
-        client.write(byteBuffer.flip());
+//        client.write(byteBuffer.flip());
         client.write(ByteBuffer.wrap(String.format(message).getBytes()));
         byteBuffer.clear();
+        byteBuffer.flip();
     }
 }
